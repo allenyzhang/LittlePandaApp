@@ -1,13 +1,13 @@
 // BookListScreen.js
 
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 const BookListScreen = ({ navigation, route }) => {
-  const { categoryName, books } = route.params;
+  const { categoryName, books, bookCovers } = route.params;
 
-  const navigateToReading = (bookTitle) => {
-    navigation.navigate('Reading', { bookTitle });
+  const navigateToReading = (bookTitle, bookCover) => {
+    navigation.navigate('Reading', { bookTitle, bookCover });
   };
 
   return (
@@ -17,9 +17,10 @@ const BookListScreen = ({ navigation, route }) => {
         data={books}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigateToReading(item)}>
+          <TouchableOpacity onPress={() => navigateToReading(item, bookCovers[item])}>
             <View style={styles.book}>
-              <Text>{item}</Text>
+              <Image source={bookCovers[item]} style={styles.coverImage} />
+              <Text style={styles.bookTitle}>{item}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -27,6 +28,7 @@ const BookListScreen = ({ navigation, route }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -39,10 +41,44 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   book: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
+  coverImage: {
+    width: 50,
+    height: 70,
+    marginRight: 10,
+  },
+  bookTitle: {
+    marginLeft: 10,
+  },
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+//   title: {
+//     fontSize: 24,
+//     marginBottom: 20,
+//   },
+//   book: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     padding: 10,
+//     borderBottomWidth: 1,
+//     borderBottomColor: '#ccc',
+//   },
+//   coverImage: {
+//     width: 50,
+//     height: 70,
+//     marginRight: 10,
+//   },
+// });
 
 export default BookListScreen;
